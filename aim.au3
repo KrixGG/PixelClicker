@@ -25,6 +25,7 @@ Global $sleep = 1
 Global $cTarget = $COLOR_WHITE
 Global $cCheck = 0
 Global $hCheck = 0
+Global $MainPixel = 0
 Opt("SendkeyDownDelay", Random(5, 50, 1))
 Opt("GUIOnEventMode",1)
 SoundSetWaveVolume(10)
@@ -32,14 +33,21 @@ Opt("MouseClickDelay", 0)
 
 ;Main window
 
-Local $hGUI = GUICreate("OH YES", 300, 300)
+Local $hGUI = GUICreate("PixelClicker", 300, 300)
 GUISetOnEvent($GUI_EVENT_CLOSE, "Quit")
 FileInstall("smile.jpg",@TempDir & "\smile.jpg")
 Local $Pic1 = GUICtrlCreatePic(@TempDir & "\smile.jpg", 0, 0, 300, 300)
 FileDelete(@TempDir & "\smile.jpg")
+
+#comments-start
+
+Slider para o delay entre as repetições
 GUICtrlSetState(-1,$GUI_DISABLE)
 Local $hSlider = GUICtrlCreateSlider(0, 0, 300, 30, BitOR($TBS_TOOLTIPS, $TBS_AUTOTICKS, $TBS_ENABLESELRANGE))
 GUICtrlSetLimit($hSlider, 10000, 2000)
+
+#comments-end
+
 GUISetState()
 
 ;icon
@@ -47,17 +55,23 @@ FileInstall("icon.ico",@TempDir & "\icon.ico")
 
 ;HELP
 
-GUISetFont (9, 900)
-Local $help = GUICtrlCreateLabel("F11-Start F10-Pause F9-Exit F8-Target F7-HP", 30, 280)
-GUISetFont (9, 400)
+GUISetFont (9, 700)
+Local $help = GUICtrlCreateLabel("F11-Start F10-Pause F9-Exit F8-Target F7-HP", 0, 275, 300, 50, $SS_CENTER)
 GUICtrlSetBkColor($help, $GUI_BKCOLOR_TRANSPARENT)
 GUICtrlSetColor($help, $COLOR_WHITE)
+Local $help = GUICtrlCreateLabel("By Krix", 0, 285, 300, 50, $SS_CENTER)
+GUICtrlSetBkColor($help, $GUI_BKCOLOR_TRANSPARENT)
 
 ;inputs
 
+#comments-start
+
+Texto em baixo do slider do delay
 Local $Delay = GUICtrlCreateLabel( "Delay entre repetições", 100, 30)
 GUICtrlSetBkColor($Delay, $GUI_BKCOLOR_TRANSPARENT)
 GUICtrlSetColor($Delay, $COLOR_WHITE)
+
+#comments-end
 
 ;att
 Local $lAtt = GUICtrlCreateLabel("Att", 10, 32)
@@ -106,8 +120,8 @@ GUICtrlSetColor($htarget, $COLOR_WHITE)
 FileDelete(@TempDir & "\icon.ico")
 
 ;indicador
-$hWndTT = _GUICtrlSlider_GetToolTips($hSlider)
-_GUICtrlSlider_SetToolTips($hSlider, $hWndTT)
+;$hWndTT = _GUICtrlSlider_GetToolTips($hSlider) controlo do slider em cima para variável
+;_GUICtrlSlider_SetToolTips($hSlider, $hWndTT)
 
 Func CLOSEButton()
    MsgBox($MB_OK, "Bye", "Bye")
@@ -144,7 +158,7 @@ Func Coordenadas()
    $MousePos = MouseGetPos()
    Global $x = $MousePos[0]
    Global $y = $MousePos[1]
-   Global $MainPixel = PixelGetColor($x, $y)
+   $MainPixel = PixelGetColor($x, $y)
    ;Send($x & @CRLF & $y & @CRLF & $MainPixel & @CRLF)
    $MainPixel_Hex = Hex ($MainPixel, 6)
    $cor = "0x" & $MainPixel_Hex
