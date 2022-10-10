@@ -144,7 +144,7 @@ While 1
 	  Do
 		 $aimbot = PixelSearch(453, 202, 1513, 670, $MainPixel)
 	  Until (Not @error)
-	  Call(hPixelCheck)
+	  Call(PixelCheck)
 	  ;Send(@CRLF & "hPixelCheck")
 	  if $hCheck = 1 Then
 		 MouseClick($MOUSE_CLICK_LEFT, $aimbot[0], $aimbot[1], 1, 0)
@@ -188,13 +188,13 @@ EndFunc
 
 Func PixelCheck()
    ;Send(@CRLF & "FuncPC")
-   Global $nPixel = PixelGetColor($x, $y)
+   Global $nPixel = PixelGetColor($aimbot[0], $aimbot[1])
    ;Send(@CRLF & "Got Color" & @CRLF & $nPixel & @CRLF & $MainPixel)
    If $nPixel == $MainPixel Then
 	  ;Send(@CRLF & "cCheck = 1" )
-	  $cCheck = 1
+	  $hCheck = 1
    Else
-	  $cCheck = 0
+	  $hCheck = 0
 	  ;Send(@CRLF & "cCheck = 0" )
    EndIf
 EndFunc
