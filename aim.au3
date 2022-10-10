@@ -39,7 +39,7 @@ FileInstall("smile.jpg",@TempDir & "\smile.jpg")
 Local $Pic1 = GUICtrlCreatePic(@TempDir & "\smile.jpg", 0, 0, 300, 300)
 FileDelete(@TempDir & "\smile.jpg")
 
-#comments-start
+#comments-start Slider
 
 Slider para o delay entre as repetições
 GUICtrlSetState(-1,$GUI_DISABLE)
@@ -56,15 +56,15 @@ FileInstall("icon.ico",@TempDir & "\icon.ico")
 ;HELP
 
 GUISetFont (9, 700)
-Local $help = GUICtrlCreateLabel("F11-Start F10-Pause F9-Exit F8-Target F7-HP", 0, 275, 300, 50, $SS_CENTER)
+Local $help = GUICtrlCreateLabel("F11-Start F10-Pause F9-Exit F8-Target", 0, 270, 300, 50, $SS_CENTER)
 GUICtrlSetBkColor($help, $GUI_BKCOLOR_TRANSPARENT)
-GUICtrlSetColor($help, $COLOR_WHITE)
+GUICtrlSetColor($help, $COLOR_BLACK)
 Local $help = GUICtrlCreateLabel("By Krix", 0, 285, 300, 50, $SS_CENTER)
 GUICtrlSetBkColor($help, $GUI_BKCOLOR_TRANSPARENT)
 
 ;inputs
 
-#comments-start
+#comments-start Slider Description
 
 Texto em baixo do slider do delay
 Local $Delay = GUICtrlCreateLabel( "Delay entre repetições", 100, 30)
@@ -74,18 +74,28 @@ GUICtrlSetColor($Delay, $COLOR_WHITE)
 #comments-end
 
 ;att
+#comments-start
+
 Local $lAtt = GUICtrlCreateLabel("Att", 10, 32)
 GUICtrlSetBkColor($lAtt, $GUI_BKCOLOR_TRANSPARENT)
 GUICtrlSetColor($lAtt, $COLOR_WHITE)
 Local $nAtt = GUICtrlCreateInput("1", 40, 30, 20, 20, $ES_CENTER)
 
+#comments-end
+
 ;drop
+#comments-start
+
 Local $lDrops = GUICtrlCreateLabel("Drops", 2, 50)
 GUICtrlSetBkColor($lDrops, $GUI_BKCOLOR_TRANSPARENT)
 GUICtrlSetColor($lDrops, $COLOR_WHITE)
 Local $nDrops = GUICtrlCreateInput("4", 40, 50, 20, 20, $ES_CENTER)
 
+#comments-end
+
 ;hp
+#comments-start
+
 Local $lHP = GUICtrlCreateLabel("HP", 2, 90)
 GUICtrlSetBkColor($lHP, $GUI_BKCOLOR_TRANSPARENT)
 GUICtrlSetColor($lHP, $COLOR_WHITE)
@@ -94,15 +104,17 @@ Local $tHP = GUICtrlCreateButton("", 65, 90, 20, 20, $BS_ICON)
 GUICtrlSetImage($tHP, "icon.ico")
 GUICtrlSetOnEvent($tHP, "CHP")
 
+#comments-end
+
 ;target
-Local $target = GUICtrlCreateLabel("Target", 0, 70)
+Local $target = GUICtrlCreateLabel("Target", 10, 10)
 GUICtrlSetBkColor($target, $GUI_BKCOLOR_TRANSPARENT)
 GUICtrlSetColor($target, $COLOR_WHITE)
-Local $ttarget = GUICtrlCreateButton("", 65, 70, 20, 20, $BS_ICON)
+Local $ttarget = GUICtrlCreateButton("", 50, 10, 20, 20, $BS_ICON)
 GUICtrlSetImage($ttarget, "icon.ico")
 GUICtrlSetOnEvent($ttarget, "CTarget")
 
-#comments-start
+#comments-start Video Player
 $vx = 100
 $vy = 100
 $vwidth = 1100
@@ -119,7 +131,7 @@ GUICtrlSetColor($htarget, $COLOR_WHITE)
 
 FileDelete(@TempDir & "\icon.ico")
 
-;indicador
+;indicador do slider
 ;$hWndTT = _GUICtrlSlider_GetToolTips($hSlider) controlo do slider em cima para variável
 ;_GUICtrlSlider_SetToolTips($hSlider, $hWndTT)
 
@@ -132,7 +144,7 @@ HotKeySet("{f11}","Start")
 HotKeySet("{f9}", "Quit")
 HotKeySet("{f10}","Stop")
 HotKeySet("{f8}", "Coordenadas")
-HotKeySet("{f7}", "HPCoordenadas")
+;HotKeySet("{f7}", "HPCoordenadas")
 
 While 1
    If $sleep = 1 then
@@ -146,9 +158,9 @@ While 1
 	  Until (Not @error)
 	  Call(PixelCheck)
 	  ;Send(@CRLF & "hPixelCheck")
-	  if $hCheck = 1 Then
+	  if $cCheck = 1 Then
 		 MouseClick($MOUSE_CLICK_LEFT, $aimbot[0], $aimbot[1], 1, 0)
-		 $hCheck = 0
+		 $cCheck = 0
 	  EndIf
 	  ;Send(@CRLF & "EndIf")
    EndIf
@@ -162,7 +174,7 @@ Func Coordenadas()
    ;Send($x & @CRLF & $y & @CRLF & $MainPixel & @CRLF)
    $MainPixel_Hex = Hex ($MainPixel, 6)
    $cor = "0x" & $MainPixel_Hex
-   Global $pCor = GUICtrlCreateLabel ("", 90, 70, 20, 20)
+   Global $pCor = GUICtrlCreateLabel ("", 50, 10, 20, 20)
    GUICtrlSetBKColor($pCor, $cor)
 EndFunc
 
@@ -176,6 +188,7 @@ Func CTarget()
    DllClose($hDLL)
 EndFunc
 
+#comments-start
 Func CHP()
    Local $hDLL = DllOpen("user32.dll")
    Local $clique = _IsPressed("01", $hDLL)
@@ -186,18 +199,22 @@ Func CHP()
    DllClose($hDLL)
 EndFunc
 
+#comments-end
+
 Func PixelCheck()
    ;Send(@CRLF & "FuncPC")
    Global $nPixel = PixelGetColor($aimbot[0], $aimbot[1])
    ;Send(@CRLF & "Got Color" & @CRLF & $nPixel & @CRLF & $MainPixel)
    If $nPixel == $MainPixel Then
 	  ;Send(@CRLF & "cCheck = 1" )
-	  $hCheck = 1
+	  $cCheck = 1
    Else
-	  $hCheck = 0
+	  $cCheck = 0
 	  ;Send(@CRLF & "cCheck = 0" )
    EndIf
 EndFunc
+
+#comments-start Antigo PixelCheck
 
 Func HPCoordenadas()
    $hMousePos = MouseGetPos()
@@ -223,6 +240,8 @@ Func hPixelCheck()
 	  ;Send(@CRLF & "hCheck = 1" )
    EndIf
 EndFunc
+
+#comments-end
 
 Func Stop()
    SoundPlay("")
